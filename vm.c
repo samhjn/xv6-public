@@ -130,7 +130,7 @@ kvmalloc(void)
 void
 switchkvm(void)
 {
-  csrrw(0, CSR_SATP, (1<<31) | ((kpgdir>>12) & 0x3fffff));   // switch to the kernel page table
+  csrrw(0, CSR_SATP, satp(1, 0, kpgdir>>12));   // switch to the kernel page table
 }
 
 // Switch TSS and h/w page table to correspond to process p.
@@ -151,7 +151,7 @@ switchuvm(struct proc *p)
   // forbids I/O instructions (e.g., inb and outb) from user space
   //mycpu()->ts.iomb = (ushort) 0xFFFF;
   //ltr(SEG_TSS << 3);
-  csrrw(0, CSR_SATP, (1<<31) | ((V2P(p->pgdir)>>12) & 0x3fffff )); // switch to process's address space
+  csrrw(0, CSR_SATP, satp(1, 0, V2P(p->pgdir)>>12)); // switch to process's address space
   //popcli();
 }
 
