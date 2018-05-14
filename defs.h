@@ -1,3 +1,6 @@
+#ifndef __DEF_H
+#define __DEF_H
+
 struct buf;
 struct context;
 struct file;
@@ -171,20 +174,21 @@ void            uartintr(void);
 void            uartputc(int);
 
 // vm.c
-void            seginit(void);
 void            kvmalloc(void);
-pde_t*          setupkvm(void);
-char*           uva2ka(pde_t*, char*);
-int             allocuvm(pde_t*, uint, uint);
-int             deallocuvm(pde_t*, uint, uint);
-void            freevm(pde_t*);
-void            inituvm(pde_t*, char*, uint);
-int             loaduvm(pde_t*, char*, struct inode*, uint, uint);
-pde_t*          copyuvm(pde_t*, uint);
+pte_t*          setupkvm(void);
+char*           uva2ka(pte_t*, char*);
+int             allocuvm(pte_t*, uint, uint);
+int             deallocuvm(pte_t*, uint, uint);
+void            freevm(pte_t*);
+void            inituvm(pte_t*, char*, uint);
+int             loaduvm(pte_t*, char*, struct inode*, uint, uint);
+pte_t*          copyuvm(pte_t*, uint);
 void            switchuvm(struct proc*);
 void            switchkvm(void);
-int             copyout(pde_t*, uint, void*, uint);
-void            clearpteu(pde_t *pgdir, char *uva);
+int             copyout(pte_t*, uint, void*, uint);
+void            clearpteu(pte_t *pgdir, char *uva);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))
+
+#endif
