@@ -2,7 +2,6 @@
 #include "stat.h"
 #include "fcntl.h"
 #include "user.h"
-#include "riscv.h"
 
 char*
 strcpy(char *s, char *t)
@@ -36,7 +35,20 @@ strlen(char *s)
 void*
 memset(void *dst, int c, uint n)
 {
-  stosb(dst, c, n);
+  if ((((uint)dst | n) & (sizeof(uint)-1)) == 0) {
+    uint word = c & 0xFF;
+    word |= word << 8;
+    word |= word << 16;
+    word |= word << 16 << 16;
+
+    uint *d = dst;
+    while (d < (uint *)(dst + n))
+      *d++ = word;
+  } else {
+    char *d = dst;
+    while (d < (char*)(dst + n))
+      *d++ = c;
+  }
   return dst;
 }
 
