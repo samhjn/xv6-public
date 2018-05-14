@@ -40,7 +40,7 @@
 #define     CSR_SATP            0x180
 
 #define satp(mode, asid, ppn) \
-    ((mode << 31) | ((asid & 0x1ff) << 22) | (ppn & 0x3fffff))
+    (((mode) << 31) | (((asid) & 0x1ff) << 22) | ((ppn) & 0x3fffff))
 
 
 #endif
