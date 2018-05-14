@@ -33,25 +33,25 @@ OBJS = \
 
 # Try to infer the correct TOOLPREFIX if not set
 ifndef TOOLPREFIX
-TOOLPREFIX := $(shell if riscv64-unknown-linux-gnu-objdump -i 2>&1 | grep '^elf64-little$$' >/dev/null 2>&1; \
-	then echo 'riscv64-unknown-linux-gnu-'; \
+TOOLPREFIX := $(shell if riscv32-unknown-linux-gnu-objdump -i 2>&1 | grep '^elf32-little$$' >/dev/null 2>&1; \
+	then echo 'riscv32-unknown-linux-gnu-'; \
 	else echo "***" 1>&2; \
-	echo "*** Error: Couldn't find an riscv64-* version of GCC/binutils." 1>&2; \
-	echo "*** Is the directory with riscv64-unknown-linux-gnu-gcc in your PATH?" 1>&2; \
-	echo "*** If your riscv64-* toolchain is installed with a command" 1>&2; \
-	echo "*** prefix other than 'riscv64-unknown-linux-gnu-', set your TOOLPREFIX" 1>&2; \
+	echo "*** Error: Couldn't find an riscv32-* version of GCC/binutils." 1>&2; \
+	echo "*** Is the directory with riscv32-unknown-linux-gnu-gcc in your PATH?" 1>&2; \
+	echo "*** If your riscv32-* toolchain is installed with a command" 1>&2; \
+	echo "*** prefix other than 'riscv32-unknown-linux-gnu-', set your TOOLPREFIX" 1>&2; \
 	echo "*** environment variable to that prefix and run 'make' again." 1>&2; \
 	echo "*** To turn off this error, run 'gmake TOOLPREFIX= ...'." 1>&2; \
 	echo "***" 1>&2; exit 1; fi)
 endif
 
 # If the makefile can't find QEMU, specify its path here
-# QEMU = qemu-system-riscv64
+# QEMU = qemu-system-riscv32
 
 # Try to infer the correct QEMU
 ifndef QEMU
-QEMU = $(shell if which qemu-system-riscv64 > /dev/null; \
-	then echo qemu-system-riscv64; exit; \
+QEMU = $(shell if which qemu-system-riscv32 > /dev/null; \
+	then echo qemu-system-riscv32; exit; \
 	fi;\
 	echo "***" 1>&2; \
 	echo "*** Error: Couldn't find a working QEMU executable." 1>&2; \
@@ -69,7 +69,7 @@ CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -O2 -Wall -MD -ggdb 
 #CFLAGS = -fno-pic -static -fno-builtin -fno-strict-aliasing -fvar-tracking -fvar-tracking-assignments -O0 -g -Wall -MD -gdwarf-2 -Werror -fno-omit-frame-pointer
 CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
 ASFLAGS = -gdwarf-2 -Wa,-divide
-LDFLAGS += -m $(shell $(LD) -V | grep elf64lriscv 2>/dev/null | head -n 1)
+LDFLAGS += -m $(shell $(LD) -V | grep elf32lriscv 2>/dev/null | head -n 1)
 
 xv6.img: bootblock kernel fs.img
 	dd if=/dev/zero of=xv6.img count=10000
