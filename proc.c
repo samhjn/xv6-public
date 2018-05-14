@@ -3,7 +3,7 @@
 #include "param.h"
 #include "memlayout.h"
 #include "mmu.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "proc.h"
 #include "spinlock.h"
 

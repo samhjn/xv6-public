@@ -13,7 +13,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-#include "rv64.h"
+#include "riscv.h"
 
 static void consputc(int);
 

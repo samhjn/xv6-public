@@ -7,7 +7,7 @@
 #include "param.h"
 #include "memlayout.h"
 #include "mp.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "mmu.h"
 #include "proc.h"
 

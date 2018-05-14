@@ -3,7 +3,7 @@
 #include "types.h"
 #include "defs.h"
 #include "param.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"

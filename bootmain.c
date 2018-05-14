@@ -7,7 +7,7 @@
 
 #include "types.h"
 #include "elf.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "memlayout.h"
 
 #define SECTSIZE  512

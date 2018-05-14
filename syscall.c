@@ -4,7 +4,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "syscall.h"
 
 // User code makes a system call with INT T_SYSCALL.

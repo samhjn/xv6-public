@@ -4,7 +4,7 @@
 #include "mmu.h"
 #include "proc.h"
 #include "defs.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "elf.h"
 
 int

@@ -1,5 +1,5 @@
 #include "types.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "defs.h"
 #include "kbd.h"
 

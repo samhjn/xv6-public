@@ -1,5 +1,5 @@
 #include "types.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "traps.h"
 
 // I/O Addresses of the two programmable interrupt controllers

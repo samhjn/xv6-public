@@ -4,7 +4,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-#include "rv64.h"
+#include "riscv.h"
 
 static void startothers(void);
 static void mpmain(void)  __attribute__((noreturn));
@@ -21,7 +21,6 @@ main(void)
   kvmalloc();      // kernel page table
   mpinit();        // detect other processors
   lapicinit();     // interrupt controller
-  seginit();       // segment descriptors
   picinit();       // disable pic
   ioapicinit();    // another interrupt controller
   consoleinit();   // console hardware
@@ -42,7 +41,6 @@ static void
 mpenter(void)
 {
   switchkvm();
-  seginit();
   lapicinit();
   mpmain();
 }

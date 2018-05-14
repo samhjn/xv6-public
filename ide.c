@@ -6,7 +6,7 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
-#include "rv64.h"
+#include "riscv.h"
 #include "traps.h"
 #include "spinlock.h"
 #include "sleeplock.h"
