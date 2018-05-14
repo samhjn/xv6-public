@@ -1,6 +1,6 @@
-#ifndef __RV64_H
+#ifndef __RISCV_H
 
-#define __RV64_H
+#define __RISCV_H
 
 #include "types.h"
 
