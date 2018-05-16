@@ -10,17 +10,32 @@
 #define csrrw(old_csr,csr,value) \
     asm volatile("CSRRW %0, %1, %2": \
                  "=r"(*old_csr): \
-                 "i"(csr), "r"(value));
+                 "i"(csr), "r"(value))
+    
+#define csrw(csr,value) \
+    asm volatile("CSRRW x0, %0, %1": \
+                 : \
+                 "i"(csr), "r"(value))
 
 #define csrrs(old_csr,csr,value) \
     asm volatile("CSRRS %0, %1, %2": \
                  "=r"(*old_csr): \
-                 "i"(csr), "r"(value));
+                 "i"(csr), "r"(value))
+
+#define csrs(csr,value) \
+    asm volatile("CSRRS x0, %0, %1": \
+                 : \
+                 "i"(csr), "r"(value))
 
 #define csrrc(old_csr,csr,value) \
     asm volatile("CSRRC %0, %1, %2": \
                  "=r"(*old_csr): \
-                 "i"(csr), "r"(value)); \
+                 "i"(csr), "r"(value))
+
+#define csrc(csr,value) \
+    asm volatile("CSRRC x0, %0, %1": \
+                 : \
+                 "i"(csr), "r"(value))
 
 
 // CSR address
@@ -41,6 +56,25 @@
 
 #define satp(mode, asid, ppn) \
     (((mode) << 31) | (((asid) & 0x1ff) << 22) | ((ppn) & 0x3fffff))
+
+static inline void
+close_outer_irq()
+{
+    csrs(CSR_SIE, 0x220);
+}
+
+static inline void
+enable_outer_irq()
+{
+    csrc(CSR_SIE, 0x220);
+}
+
+struct trapframe {
+    //GPRs
+    uint x[32];
+    
+    uint trapno;
+}
 
 
 #endif

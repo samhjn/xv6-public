@@ -174,6 +174,8 @@ void            uartintr(void);
 void            uartputc(int);
 
 // vm.c
+#include "mmu.h"
+
 void            kvmalloc(void);
 pte_t*          setupkvm(void);
 char*           uva2ka(pte_t*, char*);

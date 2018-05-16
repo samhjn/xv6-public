@@ -50,6 +50,10 @@
 
 typedef uint pte_t;
 
-#endif
+struct taskstate
+{
+    uint link;
+    uint sp0;
+};
 
 #endif

@@ -21,7 +21,7 @@ walkpgdir(pte_t *pgdir, const void *va, int alloc)
 
   pte1 = &pgdir[VPN1(va)];
   if(*pte1 & PTE_V){
-    pgtab = (pte0_t*)P2V(PTE_ADDR(*pde));
+    pgtab = (pte0_t*)P2V(PTE_ADDR(*pte1));
   } else {
     if(!alloc || (pgtab = (pte0_t*)kalloc()) == 0)
       return 0;
@@ -30,7 +30,7 @@ walkpgdir(pte_t *pgdir, const void *va, int alloc)
     // The permissions here are overly generous, but they can
     // be further restricted by the permissions in the page table
     // entries, if necessary.
-    *pde = V2P(pgtab) | PTE_V | PTE_W | PTE_U;
+    *pte1 = V2P(pgtab) | PTE_V | PTE_W | PTE_U;
   }
   return &pgtab[VPN0(va)];
 }
@@ -130,7 +130,7 @@ kvmalloc(void)
 void
 switchkvm(void)
 {
-  csrrw(0, CSR_SATP, satp(1, 0, kpgdir>>12));   // switch to the kernel page table
+  csrw( CSR_SATP, satp(1, 0, kpgdir>>12));   // switch to the kernel page table
 }
 
 // Switch TSS and h/w page table to correspond to process p.
@@ -151,7 +151,7 @@ switchuvm(struct proc *p)
   // forbids I/O instructions (e.g., inb and outb) from user space
   //mycpu()->ts.iomb = (ushort) 0xFFFF;
   //ltr(SEG_TSS << 3);
-  csrrw(0, CSR_SATP, satp(1, 0, V2P(p->pgdir)>>12)); // switch to process's address space
+  csrw(CSR_SATP, satp(1, 0, V2P(p->pgdir)>>12)); // switch to process's address space
   //popcli();
 }
 
@@ -266,7 +266,7 @@ freevm(pte_t *pgdir)
   if(pgdir == 0)
     panic("freevm: no pgdir");
   deallocuvm(pgdir, KERNBASE, 0);
-  for(i = 0; i < NPDENTRIES; i++){
+  for(i = 0; i < NPTENTRIES; i++){
     if(pgdir[i] & PTE_V){
       char * v = P2V(PTE_ADDR(pgdir[i]));
       kfree(v);

@@ -8,7 +8,7 @@
 
 static void startothers(void);
 static void mpmain(void)  __attribute__((noreturn));
-extern pde_t *kpgdir;
+extern pte_t *kpgdir;
 extern char end[]; // first address after kernel loaded from ELF file
 
 // Bootstrap processor starts running C code here.
@@ -55,7 +55,7 @@ mpmain(void)
   scheduler();     // start running processes
 }
 
-pde_t entrypgdir[];  // For entry.S
+pte_t entrypgdir[];  // For entry.S
 
 // Start the non-boot (AP) processors.
 static void
@@ -98,7 +98,7 @@ startothers(void)
 // PTE_PS in a page directory entry enables 4Mbyte pages.
 
 __attribute__((__aligned__(PGSIZE)))
-pde_t entrypgdir[NPDENTRIES] = {
+pte_t entrypgdir[NPTENTRIES] = {
   // Map VA's [0, 4MB) to PA's [0, 4MB)
   [0] = (0) | PTE_P | PTE_W | PTE_PS,
   // Map VA's [KERNBASE, KERNBASE+4MB) to PA's [0, 4MB)

@@ -103,7 +103,7 @@ pushcli(void)
   int eflags;
 
   eflags = readeflags();
-  cli();
+  close_outer_irq();
   if(mycpu()->ncli == 0)
     mycpu()->intena = eflags & FL_IF;
   mycpu()->ncli += 1;
@@ -117,6 +117,6 @@ popcli(void)
   if(--mycpu()->ncli < 0)
     panic("popcli");
   if(mycpu()->ncli == 0 && mycpu()->intena)
-    sti();
+    enable_outer_irq();
 }
 
